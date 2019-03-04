@@ -1,5 +1,5 @@
 How Windows tricks you into running Microsoft's own browser
------------------------------------------------------------
+---
 
 When on the lock screen, there are links.
 For instance, one leads you to bing on the image that is showing on the lock screen's background.
