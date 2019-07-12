@@ -3,10 +3,15 @@
 1.1 Ansible and grep
 
 Relying on failure of a task to impement playbook logic is risky, as a lot of things can happen outside of the expected path.
+
 Failure of a command may not indicate the situation we expect.
+
 Thus, it is safer to make the logic rely on information gathered that can be checked besides the possible failure of a command.
-If possible, the command should NEVER fail. But then you have `grep`.
+
+If possible, the command should NEVER fail (unless there is an error you want to stop on). But then you have `grep`.
+
 Using grep to count items will return an error status in case it finds no matches. It will however output '0', along with a non-zero return code.
+
 See examples below on how to work around that.
 
 ```yaml
