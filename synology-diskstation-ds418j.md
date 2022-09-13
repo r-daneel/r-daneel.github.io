@@ -4,23 +4,23 @@
 ## Introduction
 After years of using nas4free (formerly freenas) for my personal network attached storage needs, I decided to switch.
 This change did not come easily nor naturally.
-Strong advocate of opensource software and projects, nas4free (formerly freenas) was THE solution to my geeky needs.
-So why ? Why go spend a non-negligible amount of money on a paid-for appliance.
+Being a strong advocate of opensource software and projects, nas4free was THE solution to my geeky needs.
+So why ? Why go spend a sizable amount of money on a paid appliance.
 Well, let's step back a bit for a fuller picture.
 
 ## Data storage
 Of all the parts that compose your typical computing environment, data storage sits in a peculiar spot.
 All hardware and software components, all of them, can misbehave. But if you were to pick one that you absolutely want to make sure works, you'd pick storage.
-CPUs may burn, RAM may fail, Operating systems may put your server close to a halt and network frames may disappear in the void, but the data you wrote on your disk shall not disappear.
-In the worst case, pull out the drive and plug it on a machine that is working. You're safe, your por^H^H^H important documents are safe.
+CPUs may burn, RAM may fail, Operating system quirks may put your server close to a halt and network frames may disappear in the void, but the data you wrote on your disk shall not disappear.
+In the worst case, pull out the drive and plug it on a machine that is working. You're safe, your important documents are safe.
 Now, having rescued multiple hard drives that were physically or logically dying, I am very confident that data can be retrieved.
 This however becomes a bit trickier, if you start growing out of a single drive.
-When you start using multiple drives that transparently 'merge' toghether to hold you data, you enter the realm of RAID.
-Your data in no longer nicely written on one disk, but scattered acress multiple drives, and, if you have a ot of sanity, you chose to use one of the RAID modes (called levels) that offer some kind of redundancy.
+When you start using multiple drives that transparently 'merge' toghether to hold your data, you enter the realm of RAID.
+Your data in no longer nicely written on one disk, but scattered across multiple drives, and, if you have a bit of sanity, you chose to use one of the RAID modes (called levels) that offer redundancy.
 Now that your data sits on multiple drives, you better trust the software that does the spreading, because there is no way in hell for you to stitch the data back if the software you were relying on fails to do it.
 
 ## My beloved file server
-My first file server had only 2 drives. Ran a basic linux distribution.
+My first file server had only 2 drives. It ran a basic linux distribution.
 In order to get redundancy in a 2 drive system, the only way to go is mirroring (also called RAID 1).
 So the software that came with linux happily built my RAID 1 array an worked fine.
 (well, until a defective and undetected RAM failure corrupted all the data, but that is out of the scope of this post).
@@ -39,35 +39,35 @@ Other software bundles, based on linux are also out there. I'm sure they would a
 As my current nas4free system was filling up to a dangerous 96% (2 x 4TB drives zRAID1), I was considering a hardware upgrade.
 I was ready for a 'while we're at it ...' moment.
 As I'm changing the hardware, wouldn't it be nice if I uprgaded nas4free to the latest version ? Or use one of these other cool NAS projects based on linux ?
-Yes, I was lagging behind nas4free upgrades, because this one would require a reinstall (sometimes the changes are so deep, there is no upgrade path), so I'd need to make sure I have a full backup in case I couldn't reimport the ZFS pool.
+Yes, I was lagging behind nas4free upgrades, because this would require a reinstall (sometimes the changes are so deep, there is no upgrade path), so I'd need to make sure I have a full backup in case I couldn't reimport the ZFS pool.
 Switching to yet another NAS software would require a testing phase (did I emphasize on the fact that you need to have backups before playing with your data ?).
 And foremost, I'd need more space, so:
 - either I add disks
 - or I buy bigger disks
 Adding disks beyond RAID1 is always tempting. You get RAID5 starting with 3 drives, so, compared to RAID1 you immediately double your storage.
-However, the old PC I was using had only 2 drive bays and 2 sata ports, so adding drives would come at the cost of buying a new chassis, maybe a new motherboard ... see the rappithole there ?
+However, the old PC I was using had only 2 drive bays and 2 sata ports, so adding drives would come at the cost of buying a new chassis, maybe a new motherboard ... see the rabbithole there ?
 So, in order to avoid loosing yet more time and solving the issue for, hopefully, a long time, I looked around for other ways. I'd be able to play with the rest once my real life need is secured.
 
 ## Commercial NAS appliances
 I actually was already using a commercial all-in-one NAS appliance. Along with my local homebuilt NAS, I bought something that would easily survive at my parent's home, be simple to setup & maintain, low on power and as silent as possible.
-I chose a 1 drive synology device as my offsite backup. In all honesty, after the initial fiddeling to get rsync+ssh working the way I wanted, there was not much to say. I connected maybe twice a year into the web interface to find that there was nothing to do. The system is quiet, spinning down the disk most of the time, never missed a backup coming from my systems, performed it's own software updates with no hassle and I really feel, after a couple of years, that there really was not much happeninig. Exactly what one would expect.
-I lurked on the other players, namely Qnap and Drobo. Both were, AFAIK, more expensive than Synology. The reason I looked at Drobo was because of their ability to dispatch the data on disks of different sizes and maximize usage while keeping redundancy. It so happened that talking t oa friend about it, he pointed out that Synalogy also had that kind of technology, called SHR (Synology Hybrid RAID, more about that later). So, given the better price-point, and my satisfaction with the 1 drive product, I decided to give it a try.
+I chose a 1 drive Synology device as my offsite backup. In all honesty, after the initial fiddeling to get rsync+ssh working the way I wanted, there was not much to say. I connected maybe twice a year into the web interface to find that there was nothing to do. The system is quiet, spinning down the disk most of the time, never missed a backup coming from my systems, performed it's own software updates with no hassle and I really feel, after a couple of years, that there really was not much happeninig. Exactly what one would expect.
+I lurked on the other players, namely Qnap and Drobo. Both were, AFAIK, more expensive than Synology. The reason I looked at Drobo was because of their ability to dispatch the data on disks of different sizes and maximize usage while keeping redundancy. It so happened that talking to a friend about it, he pointed out that Synalogy also had that kind of technology, called SHR (Synology Hybrid RAID, more about that later). So, given the better price-point, and my satisfaction with the 1 drive product, I decided to give it a try.
 
 ## How to not make it simple
 Here's the plan.
-I have 2X4TB drives being used in my current NAS.
-I bought a 4 drive NAS from Synology (DS418j) and 2 additional 4TB drives.
-I could have just started the NAS with the 2X4TB drives, tansferred the data over and added the 2 other 4TB drives in the 4 bay NAS.
+I have 2X4TB drives in my current NAS.
+I bought a 4 bay NAS from Synology (DS418j) and 2 additional 4TB drives.
+I could have just started the NAS with the 2 x 4TB drives, tansferred the data over and added the 2 other 4TB drives in the 4 bay NAS.
 But I didn't.
-I had 4X1TB WD Green drives laying around. Given their bad reputation (from more or less day 1 of their shipment) and low capacity (by today's standards), I hadn't used them in a while. I decided to build a 4 drive RAID off those drives.
-One reason was, I wanted to make sure the 4TB drives I bought were ok, so I ran the linux program 'badblocks' on them. The 'badblocks' program essentially writes patterns on the whole drive and reads them back. The default is 4 patterns, 1 write pass and 1 read pass per pattern, so 4 full writes and 4 full reads. Trying the 1TB drives in the NAS, would allow me to test things while waiting for the real drives.
-The other reason was, I got curious about the SHR (Synology Hybrid RAID). Supposedly, I would be able to start from 4x1TB drives and upgrade to 4X4TB drives transparently and maximizing the usable capacity with every drive. Having quiet a good idea on how RAID (hard & soft) works, I wanted to take advantage of the full fledged linux shell access to spy on the innards of the system.
+I had 4 x 1TB WD Green drives laying around. Given their bad reputation (from more or less day 1 of their shipment) and low capacity (by today's standards), I hadn't used them in a while. I decided to build a 4 drive RAID off those drives.
+One reason was, I wanted to make sure the 4TB drives I bought were ok, so I ran the linux program 'badblocks' on them. The 'badblocks' program essentially writes patterns on the whole drive and reads them back. The default is 4 patterns, 1 write pass and 1 read pass per pattern, so 4 full writes and 4 full reads. This would take a while. Trying the 1TB drives in the NAS, would allow me to test the NAS while waiting for the real drives.
+The other reason was, I got curious about the SHR (Synology Hybrid RAID). Supposedly, I would be able to start from 4 x 1TB drives and upgrade to 4 x 4TB drives transparently and maximizing the usable capacity with every drive. Having quiet a good idea on how RAID (hard & soft) works, I wanted to take advantage of the full fledged linux shell access to spy on the innards of the system.
 Finally, never understimate the fun of doing it represents ;)
 
 ## SHR (Synology Hybrid RAID)
 For a start, the documentation on the site (https://www.synology.com/en-us/knowledgebase/DSM/tutorial/Storage/What_is_Synology_Hybrid_RAID_SHR) gives a good idea on how SHR works.
 Basically, it does try to maximize disk usage while never loosing redundancy.
-The interesting part is, if you have disks of different sized, the software will slice things in a way it can have multiple software RAID groups on the drives, stitching the resulting splinters toghether with LVM.
+The interesting part is, if you have disks of different sizes, the software will slice things in a way it can have multiple software RAID groups on the drives, stitching the resulting splinters toghether with LVM.
 Clever indeed, with the caveat that it is biased towards growth. scaling down the drives won't work.
 I must admit, that situation probably won't happen and the upscaling scenario is actually the most probable.
 
